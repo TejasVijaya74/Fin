@@ -1,0 +1,44 @@
+.transactions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.transaction-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f1f3f5;
+}
+
+.transaction-item:last-child {
+  border-bottom: none;
+}
+
+.transaction-details p {
+  margin: 0;
+}
+
+.transaction-description {
+  font-weight: 500;
+  color: #212529;
+}
+
+.transaction-category {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.transaction-amount {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.transaction-amount.income {
+  color: #28a745; /* Green for income */
+}
+
+.transaction-amount.expense {
+  color: #dc3545; /* Red for expenses */
+}

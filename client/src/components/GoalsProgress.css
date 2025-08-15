@@ -1,0 +1,43 @@
+.goals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.goal-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.goal-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.goal-name {
+  margin: 0;
+  font-weight: 500;
+  color: #495057;
+}
+
+.goal-amount {
+  margin: 0;
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 8px;
+  background-color: #e9ecef;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #28a745; /* Green for progress */
+  border-radius: 4px;
+  transition: width 0.5s ease-in-out;
+}
