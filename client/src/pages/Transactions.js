@@ -32,27 +32,44 @@ const Transactions = ({ userId }) => {
   const handleDelete = (transactionId) => {
     if (window.confirm('Are you sure you want to delete this transaction?')) {
       axios.delete(`http://127.0.0.1:5000/api/transactions/${transactionId}`)
-        .then(() => {
-          fetchTransactions();
-        })
-        .catch(error => {
-          console.error("Error deleting transaction:", error);
-        });
+        .then(() => fetchTransactions())
+        .catch(error => console.error("Error deleting transaction:", error));
     }
   };
 
+  // This function is now upgraded to parse UPI QR code strings
   const handleScanSuccess = (scannedText) => {
     console.log("Handling scanned text:", scannedText);
     try {
-      const amount = parseFloat(scannedText);
-      if (!isNaN(amount)) {
-        setPrefillData({ amount: amount.toFixed(2), description: "Scanned Expense" });
-        setIsScanModalOpen(false);
-        setIsAddModalOpen(true);
+      // Check if it's a UPI string
+      if (scannedText.startsWith('upi://')) {
+        const urlParams = new URLSearchParams(scannedText.split('?')[1]);
+        const recipientName = urlParams.get('pn');
+        const amount = urlParams.get('am');
+
+        if (recipientName && amount) {
+          setPrefillData({
+            amount: parseFloat(amount).toFixed(2),
+            description: decodeURIComponent(recipientName) // Decode URL-encoded name
+          });
+          setIsScanModalOpen(false);
+          setIsAddModalOpen(true);
+        } else {
+          alert("UPI QR code is missing recipient name or amount.");
+        }
       } else {
-        alert("Scanned QR code does not contain a valid number.");
+        // Fallback for simple number QR codes
+        const amount = parseFloat(scannedText);
+        if (!isNaN(amount)) {
+          setPrefillData({ amount: amount.toFixed(2), description: "Scanned Expense" });
+          setIsScanModalOpen(false);
+          setIsAddModalOpen(true);
+        } else {
+          alert("Scanned QR code is not a valid UPI code or a simple number.");
+        }
       }
     } catch (e) {
+      console.error("Error parsing QR code:", e);
       alert("Could not parse data from QR code.");
     }
   };
