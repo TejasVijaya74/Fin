@@ -4,7 +4,7 @@ import ExpenseChart from '../components/ExpenseChart';
 import RecentTransactions from '../components/RecentTransactions';
 import GoalsProgress from '../components/GoalsProgress';
 
-const Dashboard = () => {
+const Dashboard = ({ userId }) => {
   return (
     <main className="dashboard">
       <header className="dashboard-header">
@@ -14,15 +14,15 @@ const Dashboard = () => {
       <div className="dashboard-content">
         <div className="widget">
           <h3>Monthly Expenses</h3>
-          <ExpenseChart />
+          <ExpenseChart userId={userId} />
         </div>
         <div className="widget">
           <h3>Recent Transactions</h3>
-          <RecentTransactions />
+          <RecentTransactions userId={userId} />
         </div>
         <div className="widget">
            <h3>Your Goals</h3>
-           <GoalsProgress />
+           <GoalsProgress userId={userId} />
         </div>
       </div>
     </main>

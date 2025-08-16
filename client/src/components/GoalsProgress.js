@@ -1,4 +1,3 @@
-// client/src/components/GoalsProgress.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './GoalsProgress.css';
@@ -12,13 +11,13 @@ const ProgressBar = ({ current, target }) => {
   );
 };
 
-const GoalsProgress = () => {
+const GoalsProgress = ({ userId }) => {
   const [goals, setGoals] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // This is the corrected line. The URL is now a simple string.
-    axios.get('http://127.0.0.1:5000/api/goals')
+    if (!userId) return;
+    axios.get(`http://127.0.0.1:5000/api/goals?userId=${userId}`)
       .then(response => {
         setGoals(response.data);
         setIsLoading(false);
@@ -27,10 +26,10 @@ const GoalsProgress = () => {
         console.error("Error fetching goals:", error);
         setIsLoading(false);
       });
-  }, []);
+  }, [userId]);
 
   if (isLoading) {
-    return <p>Loading goals...</p>;
+    return <p>Loading...</p>;
   }
 
   return (
@@ -39,9 +38,9 @@ const GoalsProgress = () => {
         <div key={goal.id} className="goal-item">
           <div className="goal-info">
             <p className="goal-name">{goal.name}</p>
-            <p className="goal-amount">${goal.current.toLocaleString()} / ${goal.target.toLocaleString()}</p>
+            <p className="goal-amount">${goal.current_amount.toLocaleString()} / ${goal.target_amount.toLocaleString()}</p>
           </div>
-          <ProgressBar current={goal.current} target={goal.target} />
+          <ProgressBar current={goal.current_amount} target={goal.target_amount} />
         </div>
       ))}
     </div>

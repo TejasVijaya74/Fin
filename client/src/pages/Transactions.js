@@ -1,31 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // 1. Import axios
+import axios from 'axios';
 import './Transactions.css';
+import AddTransactionModal from '../components/AddTransactionModal';
 
 const Transactions = () => {
   const [transactions, setTransactions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    // 2. Use axios to get data
+  const fetchTransactions = () => {
+    setIsLoading(true);
     axios.get('http://127.0.0.1:5000/api/transactions')
       .then(response => {
-        // 3. The data is in response.data
-        const dataWithDates = response.data.map(t => ({ ...t, date: '2025-08-16' }));
-        setTransactions(dataWithDates);
+        setTransactions(response.data);
         setIsLoading(false);
       })
       .catch(error => {
         console.error("Error fetching transactions:", error);
         setIsLoading(false);
       });
+  };
+
+  useEffect(() => {
+    fetchTransactions();
   }, []);
 
   return (
     <main className="transactions-page">
+      {isModalOpen && <AddTransactionModal 
+        onClose={() => setIsModalOpen(false)} 
+        onTransactionAdded={fetchTransactions}
+      />}
+
       <header className="transactions-header">
         <h1>All Transactions</h1>
-        <button className="add-transaction-btn">Add New Transaction</button>
+        <button className="add-transaction-btn" onClick={() => setIsModalOpen(true)}>
+          Add New Transaction
+        </button>
       </header>
       
       {isLoading ? (

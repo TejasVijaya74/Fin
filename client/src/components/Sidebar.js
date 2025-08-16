@@ -1,7 +1,8 @@
 import React from 'react';
 import './Sidebar.css';
 
-const Sidebar = ({ onNavigate, activePage }) => {
+// 1. Receive the onLogout function as a prop
+const Sidebar = ({ onNavigate, activePage, onLogout }) => {
   return (
     <div className="sidebar">
       <div className="sidebar-header">
@@ -14,7 +15,8 @@ const Sidebar = ({ onNavigate, activePage }) => {
         <li className={`menu-item ${activePage === 'investments' ? 'active' : ''}`} onClick={() => onNavigate('investments')}>Investments</li>
         <li className={`menu-item ${activePage === 'settings' ? 'active' : ''}`} onClick={() => onNavigate('settings')}>Settings</li>
       </ul>
-      <div className="sidebar-footer">
+      {/* 2. Add an onClick handler to the logout button */}
+      <div className="sidebar-footer" onClick={onLogout}>
         <p>Logout</p>
       </div>
     </div>
