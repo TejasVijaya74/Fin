@@ -77,8 +77,8 @@ To get a local copy up and running, follow these simple steps.
 
 1.  **Clone the repository:**
     ```sh
-    git clone [https://github.com/your-username/Finwiz.git](https://github.com/your-username/Finwiz.git)
-    cd Finwiz
+    git clone [https://github.com/TejasVijaya74/Fin.git](https://github.com/TejasVijaya74/Fin.git)
+    cd Fin
     ```
 
 2.  **Setup the Backend (Server):**
