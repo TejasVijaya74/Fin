@@ -20,6 +20,11 @@
   font-weight: 700;
 }
 
+.header-buttons {
+  display: flex;
+  gap: 12px;
+}
+
 .add-transaction-btn {
   background-color: #007bff;
   color: white;
@@ -34,6 +39,22 @@
 
 .add-transaction-btn:hover {
   background-color: #0056b3;
+}
+
+.scan-qr-btn {
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.scan-qr-btn:hover {
+  background-color: #138496;
 }
 
 .transactions-table-container {
@@ -63,6 +84,15 @@
   text-transform: uppercase;
 }
 
+.transactions-table .amount-header {
+  text-align: right;
+}
+
+.transactions-table td:nth-child(4) {
+  text-align: right;
+}
+
+
 .transactions-table tbody tr:last-child td {
   border-bottom: none;
 }
@@ -75,4 +105,20 @@
 .transactions-table .expense {
   color: #dc3545;
   font-weight: 500;
+}
+
+.btn-delete-transaction {
+  background-color: transparent;
+  border: 1px solid #dc3545;
+  color: #dc3545;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-delete-transaction:hover {
+  background-color: #dc3545;
+  color: #ffffff;
 }

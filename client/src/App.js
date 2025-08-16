@@ -38,25 +38,15 @@ function App() {
 
   if (!isAuthenticated) {
     if (showLogin) {
-      return <LoginPage 
-        onLoginSuccess={handleLoginSuccess} 
-        onSwitchToSignup={() => setShowLogin(false)} 
-      />;
+      return <LoginPage onLoginSuccess={handleLoginSuccess} onSwitchToSignup={() => setShowLogin(false)} />;
     } else {
-      return <SignupPage 
-        onSignupSuccess={handleLoginSuccess}
-        onSwitchToLogin={() => setShowLogin(true)}
-      />;
+      return <SignupPage onSignupSuccess={handleLoginSuccess} onSwitchToLogin={() => setShowLogin(true)} />;
     }
   }
 
   return (
     <div className="app-container">
-      <Sidebar 
-        onNavigate={setCurrentPage} 
-        activePage={currentPage} 
-        onLogout={handleLogout} 
-      />
+      <Sidebar onNavigate={setCurrentPage} activePage={currentPage} onLogout={handleLogout} />
       {renderPage()}
     </div>
   );

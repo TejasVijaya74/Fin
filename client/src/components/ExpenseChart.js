@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // 1. Import axios
+import axios from 'axios';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const ExpenseChart = () => {
+const ExpenseChart = ({ userId }) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // 2. Use axios to get data. It automatically handles JSON parsing.
-    axios.get('http://127.0.0.1:5000/api/expense-chart-data')
+    if (!userId) return;
+    axios.get(`http://127.0.0.1:5000/api/expense-chart-data?userId=${userId}`)
       .then(response => {
-        setData(response.data); // 3. The data is in response.data
+        setData(response.data);
         setIsLoading(false);
       })
       .catch(error => {
         console.error("Error fetching chart data:", error);
         setIsLoading(false);
       });
-  }, []);
+  }, [userId]);
 
   if (isLoading) {
     return <p>Loading chart data...</p>;
@@ -25,10 +25,7 @@ const ExpenseChart = () => {
 
   return (
     <ResponsiveContainer width="100%" height={300}>
-      <BarChart
-        data={data}
-        margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
-      >
+      <BarChart data={data} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
         <CartesianGrid strokeDasharray="3 3" vertical={false} />
         <XAxis dataKey="name" />
         <YAxis />

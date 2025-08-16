@@ -1,0 +1,15 @@
+#qr-reader {
+  width: 100%;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#qr-reader video {
+  width: 100% !important;
+  height: auto !important;
+}
+
+.qr-modal-content {
+  max-width: 500px !important;
+}

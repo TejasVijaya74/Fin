@@ -10,18 +10,12 @@ const LoginPage = ({ onLoginSuccess, onSwitchToSignup }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setError('');
-
     axios.post('http://127.0.0.1:5000/api/login', { email, password })
       .then(response => {
-        console.log("Login successful:", response.data);
         onLoginSuccess(response.data.user_id);
       })
       .catch(err => {
-        if (err.response && err.response.data) {
-          setError(err.response.data.error);
-        } else {
-          setError('Login failed. Please try again.');
-        }
+        setError(err.response?.data?.error || 'Login failed. Please try again.');
       });
   };
 

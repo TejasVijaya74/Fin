@@ -3,6 +3,7 @@ import './Dashboard.css';
 import ExpenseChart from '../components/ExpenseChart';
 import RecentTransactions from '../components/RecentTransactions';
 import GoalsProgress from '../components/GoalsProgress';
+import ExpensePrediction from '../components/ExpensePrediction';
 
 const Dashboard = ({ userId }) => {
   return (
@@ -23,6 +24,10 @@ const Dashboard = ({ userId }) => {
         <div className="widget">
            <h3>Your Goals</h3>
            <GoalsProgress userId={userId} />
+        </div>
+        <div className="widget">
+           <h3>Next Month's Predicted Spending</h3>
+           <ExpensePrediction userId={userId} />
         </div>
       </div>
     </main>

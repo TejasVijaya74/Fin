@@ -2,15 +2,19 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Transactions.css';
 import AddTransactionModal from '../components/AddTransactionModal';
+import QRScannerModal from '../components/QRScannerModal';
 
-const Transactions = () => {
+const Transactions = ({ userId }) => {
   const [transactions, setTransactions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isScanModalOpen, setIsScanModalOpen] = useState(false);
+  const [prefillData, setPrefillData] = useState(null);
 
   const fetchTransactions = () => {
+    if (!userId) return;
     setIsLoading(true);
-    axios.get('http://127.0.0.1:5000/api/transactions')
+    axios.get(`http://127.0.0.1:5000/api/transactions?userId=${userId}`)
       .then(response => {
         setTransactions(response.data);
         setIsLoading(false);
@@ -23,20 +27,61 @@ const Transactions = () => {
 
   useEffect(() => {
     fetchTransactions();
-  }, []);
+  }, [userId]);
+
+  const handleDelete = (transactionId) => {
+    if (window.confirm('Are you sure you want to delete this transaction?')) {
+      axios.delete(`http://127.0.0.1:5000/api/transactions/${transactionId}`)
+        .then(() => {
+          fetchTransactions();
+        })
+        .catch(error => {
+          console.error("Error deleting transaction:", error);
+        });
+    }
+  };
+
+  const handleScanSuccess = (scannedText) => {
+    console.log("Handling scanned text:", scannedText);
+    try {
+      const amount = parseFloat(scannedText);
+      if (!isNaN(amount)) {
+        setPrefillData({ amount: amount.toFixed(2), description: "Scanned Expense" });
+        setIsScanModalOpen(false);
+        setIsAddModalOpen(true);
+      } else {
+        alert("Scanned QR code does not contain a valid number.");
+      }
+    } catch (e) {
+      alert("Could not parse data from QR code.");
+    }
+  };
 
   return (
     <main className="transactions-page">
-      {isModalOpen && <AddTransactionModal 
-        onClose={() => setIsModalOpen(false)} 
+      {isAddModalOpen && <AddTransactionModal 
+        userId={userId}
+        onClose={() => {
+          setIsAddModalOpen(false);
+          setPrefillData(null);
+        }} 
         onTransactionAdded={fetchTransactions}
+        initialData={prefillData}
+      />}
+      
+      {isScanModalOpen && <QRScannerModal 
+        onClose={() => setIsScanModalOpen(false)}
+        onScanSuccess={handleScanSuccess}
       />}
 
       <header className="transactions-header">
         <h1>All Transactions</h1>
-        <button className="add-transaction-btn" onClick={() => setIsModalOpen(true)}>
-          Add New Transaction
-        </button>
+        <div className="header-buttons">
+          <button className="scan-qr-btn" onClick={() => setIsScanModalOpen(true)}>Scan QR Code</button>
+          <button className="add-transaction-btn" onClick={() => setIsAddModalOpen(true)}>
+            Add New Transaction
+          </button>
+        </div>
       </header>
       
       {isLoading ? (
@@ -49,7 +94,8 @@ const Transactions = () => {
                 <th>Date</th>
                 <th>Description</th>
                 <th>Category</th>
-                <th>Amount</th>
+                <th className="amount-header">Amount</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -62,6 +108,11 @@ const Transactions = () => {
                     <span className={transaction.amount > 0 ? 'income' : 'expense'}>
                       {transaction.amount > 0 ? `+$${transaction.amount.toFixed(2)}` : `-$${Math.abs(transaction.amount).toFixed(2)}`}
                     </span>
+                  </td>
+                  <td>
+                    <button className="btn-delete-transaction" onClick={() => handleDelete(transaction.id)}>
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
