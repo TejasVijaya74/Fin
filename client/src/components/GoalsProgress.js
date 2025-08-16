@@ -1,4 +1,6 @@
+// client/src/components/GoalsProgress.js
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './GoalsProgress.css';
 
 const ProgressBar = ({ current, target }) => {
@@ -15,11 +17,10 @@ const GoalsProgress = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Corrected the URL to be a plain string
-    fetch('[http://127.0.0.1:5000/api/goals](http://127.0.0.1:5000/api/goals)')
-      .then(res => res.json())
-      .then(data => {
-        setGoals(data);
+    // This is the corrected line. The URL is now a simple string.
+    axios.get('http://127.0.0.1:5000/api/goals')
+      .then(response => {
+        setGoals(response.data);
         setIsLoading(false);
       })
       .catch(error => {

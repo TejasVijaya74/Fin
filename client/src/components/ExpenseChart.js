@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios'; // 1. Import axios
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const ExpenseChart = () => {
@@ -6,11 +7,10 @@ const ExpenseChart = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Corrected the URL to be a plain string
-    fetch('[http://127.0.0.1:5000/api/expense-chart-data](http://127.0.0.1:5000/api/expense-chart-data)')
-      .then(res => res.json())
-      .then(chartData => {
-        setData(chartData);
+    // 2. Use axios to get data. It automatically handles JSON parsing.
+    axios.get('http://127.0.0.1:5000/api/expense-chart-data')
+      .then(response => {
+        setData(response.data); // 3. The data is in response.data
         setIsLoading(false);
       })
       .catch(error => {

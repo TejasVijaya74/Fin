@@ -24,7 +24,7 @@ const RecentTransactions = () => {
 
   return (
     <div className="transactions-list">
-      {transactions.map((transaction) => (
+      {transactions.slice(0, 5).map((transaction) => ( // Show only the first 5
         <div key={transaction.id} className="transaction-item">
           <div className="transaction-details">
             <p className="transaction-description">{transaction.description}</p>

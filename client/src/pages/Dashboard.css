@@ -1,7 +1,7 @@
 .dashboard {
   flex-grow: 1;
   padding: 32px;
-  overflow-y: auto; /* Allow scrolling for content */
+  overflow-y: auto;
   box-sizing: border-box;
 }
 
@@ -40,8 +40,7 @@
 
 .widget h3 {
   margin-top: 0;
-  margin-bottom: 24px; /* Add space between title and content */
+  margin-bottom: 24px;
   font-size: 18px;
   color: #495057;
 }
-
